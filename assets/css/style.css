@@ -1,0 +1,108 @@
+.welcome{
+
+	font-family: 'Monofett', cursive;
+	text-align: center;
+	font-size: 5em;
+	color: #fff;
+
+}
+
+.welcomeRow{
+
+	margin-top: 20px;
+
+}
+
+#oppChoiceRow{
+
+	display: none;
+	margin-top: 20px;
+
+}
+
+.initialMain{
+
+
+	margin-top: 50px;
+
+}
+
+.list-group-item img{
+
+	width: 100%;
+	height: 400px;
+
+}
+
+.hvr-float {
+
+	display: inline-block;
+	vertical-align: middle;
+	transform: translateZ(0);
+	box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+	backface-visibility: hidden;
+	-moz-osx-font-smoothing: grayscale;
+	transition-duration: 0.3s;
+	transition-property: transform;
+	transition-timing-function: ease-out;
+
+}
+
+.hvr-float:hover,
+.hvr-float:focus,
+.hvr-float:active {
+
+	transform: translateY(-10px);
+
+}
+
+.panel-default .panel-heading {
+
+	color: #ffffff;
+	background: black;
+	text-align: center;
+	font-family: 'Diplomata SC', cursive;
+
+}
+
+.panel-title{
+
+	font-size: 1.5em;
+
+}
+.list-group {
+
+	background-color: black;
+
+}
+
+.panel-footer, .list-group-item {
+
+	background-color: black;
+	text-align: center;
+
+}
+
+.list-group-item-heading, .list-group-item-text{
+
+	color: #ffffff;
+	font-family: 'Poiret One', cursive;
+
+}
+
+.panel-footer {
+
+
+	font-family: 'Monofett', cursive;
+	color: #ffffff;
+	font-size: 2.2em;
+
+}
+
+.initialbtn {
+
+	background-color: transparent;
+	border: none;
+	outline: none;
+
+}
