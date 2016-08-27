@@ -13,13 +13,22 @@
 
 }
 
-#oppChoiceRow{
+#oppRow{
 
 	display: none;
 	margin-top: 20px;
 
 }
 
+.welcome2{
+
+	font-family: 'Monofett', cursive;
+	text-align: center;
+	font-size: 5em;
+	color: #fff;
+
+
+}
 .initialMain{
 
 
