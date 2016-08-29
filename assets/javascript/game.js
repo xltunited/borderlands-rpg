@@ -2,23 +2,25 @@ jQuery(document).ready(function() {
 
 	//Constructor of the character object, this way
 
-	function character(name, health, attack, counterAttack, isMain, currOpponent, battlePic){
+	function character(name, health, startingAttack, attack, counterAttack, isMain, currOpponent, battlePic, isDead){
 
 		this.name = name;
 		this.health = health;
 		this.attack = attack;
+		this.startingAttack = startingAttack;
 		this.counterAttack = counterAttack;
 		this.isMain = isMain;
 		this.currOpponent = currOpponent;
 		this.battlePic = battlePic;
+		this.isDead = isDead;
 
 
 	};
 
-	var Maya = new character("Maya", 100, 7, 5, false, false, "./assets/images/mayabattle.jpeg");
-	var Axton = new character("Axton", 150, 4, 20, false, false,"./assets/images/axtonbattle.jpeg");
-	var Zer0 = new character("Zer0", 120, 6, 15, false, false,"./assets/images/zer0battle.jpeg");
-	var Salvador = new character("Salvador", 180, 3, 25, false, false,"./assets/images/salvadorbattle.jpeg");
+	var Maya = new character("Maya", 100, 7, 7, 5, false, false, "./assets/images/mayabattle.jpeg", false);
+	var Axton = new character("Axton", 150, 4, 4, 20, false, false,"./assets/images/axtonbattle.jpeg", false);
+	var Zer0 = new character("Zer0", 120, 8, 8, 15, false, false,"./assets/images/zer0battle.jpeg", false);
+	var Salvador = new character("Salvador", 180, 2, 2, 25, false, false,"./assets/images/salvadorbattle.jpeg", false);
 
 	var charArray = [Maya, Axton, Zer0, Salvador];
 
@@ -28,7 +30,9 @@ jQuery(document).ready(function() {
 
     var stage = 0;
 
-	$('#mayaIni').on('click', function(){
+    var dead = 0;
+
+	$('#MayaIni').on('click', function(){
 
 		if(Maya.isMain == false & Axton.isMain == false & Zer0.isMain == false & Salvador.isMain == false){
 
@@ -43,19 +47,17 @@ jQuery(document).ready(function() {
 
 		else {
 
-			currOpponent = true;
+			Maya.currOpponent = true;
 
 			this.style.display = 'none';
 
-			$('#initialMain').css('display', 'none');
-
-			$('#oppRow').css('display', 'none');
+			battleStart();
 
 		}
 
 	})
 
-	$('#axtonIni').on('click', function(){
+	$('#AxtonIni').on('click', function(){
 
 		if(Maya.isMain == false & Axton.isMain == false & Zer0.isMain == false & Salvador.isMain == false){
 
@@ -70,19 +72,17 @@ jQuery(document).ready(function() {
 
 		else {
 
-			currOpponent = true;
+			Axton.currOpponent = true;
 
 			this.style.display = 'none';
 
-			$('#initialMain').css('display', 'none');
-
-			$('#oppRow').css('display', 'none');
+			battleStart();
 
 		}
 
 	})
 
-	$('#zer0Ini').on('click', function(){
+	$('#Zer0Ini').on('click', function(){
 
 		if(Maya.isMain == false & Axton.isMain == false & Zer0.isMain == false & Salvador.isMain == false){
 
@@ -97,19 +97,17 @@ jQuery(document).ready(function() {
 
 		else {
 
-			currOpponent = true;
+			Zer0.currOpponent = true;
 
 			this.style.display = 'none';
 
-			$('#initialMain').css('display', 'none');
-
-			$('#oppRow').css('display', 'none');
+			battleStart();
 
 		}
 		
 	})
 
-	$('#salvadorIni').on('click', function(){
+	$('#SalvadorIni').on('click', function(){
 
 		if(Maya.isMain == false & Axton.isMain == false & Zer0.isMain == false & Salvador.isMain == false){
 
@@ -141,13 +139,21 @@ jQuery(document).ready(function() {
 
 		$('#oppRow').css('display', 'none');
 
-		for(var i = 0; i < charArray.length; i++){
+		if(stage == 0){
 
-			if(charArray[i].currOpponent === true){
+			stage = 1;
 
-				stage++;
+		}
 
-			}
+		if(dead == 1){
+
+			stage = 2;
+
+		}
+
+		if(dead == 2){
+
+			stage = 3;
 
 		}
 
@@ -181,7 +187,7 @@ jQuery(document).ready(function() {
 
     	for(var i = 0; i < charArray.length; i++){
 
-    		if(charArray[i].currOpponent === true){
+    		if(charArray[i].currOpponent === true && charArray[i].isDead == false){
 
     			Opp = charArray[i];
     			break;
@@ -190,15 +196,23 @@ jQuery(document).ready(function() {
 
     	}
 
+    	$('#mainTitle').empty();
+
     	$('#mainTitle').append(Main.name);
 
     	$('#mainProfile').attr('src', Main.battlePic);
 
+    	$('#mainHealth').empty();
+
     	$('#mainHealth').append('Health = ' + Main.health);
+
+    	$('#opponentTitle').empty();
 
     	$('#opponentTitle').append(Opp.name);
 
     	$('#opponentProfile').attr('src', Opp.battlePic);
+
+    	$('#opponentHealth').empty();
 
     	$('#opponentHealth').append('Health = ' + Opp.health);
 
@@ -208,7 +222,275 @@ jQuery(document).ready(function() {
 
     	$('#opponent').css('display', 'block');
 
+    	$('#mainAttackLog').css('display', 'block');
+
+    	$('#opponentAttackLog').css('display', 'block');
+
 	}
+
+	$('#attack').on('click', function(){
+
+		Opp.health = Opp.health - Main.attack;
+
+		$('#opponentHealth').empty();
+		$('#opponentHealth').append('Health = ' + Opp.health);
+
+		$('#mainAttackLog').empty();
+		$('#mainAttackLog').append(Main.name + ' attacked ' + Opp.name + ' for ' + Main.attack + ' damage.');
+
+		Main.attack = Main.attack + Main.startingAttack;
+
+		if (Opp.health > 0) {
+
+			Main.health = Main.health - Opp.counterAttack;
+
+			$('#mainHealth').empty();
+			$('#mainHealth').append('Health = ' + Main.health);
+
+			$('#opponentAttackLog').empty();
+			$('#opponentAttackLog').append(Opp.name + ' counter-attacked ' + Main.name + ' for ' + Opp.counterAttack+ ' damage.');
+
+			if (Main.health <= 0) {
+
+				$('#mainAttackLog').css('display', 'none');
+
+    			$('#opponentAttackLog').css('display', 'none');
+
+				$('#mainKill').empty();
+
+    			$('#mainKill').append(Opp.name + ' killed ' + Main.name + '. Aww :(, better luck next time!');
+
+    			$('#mainKillRow').css('display', 'block');
+
+    			$('#attack').css('display', 'none');
+
+    			$('#tryAgain').css('display', 'block');
+
+			}
+
+		}
+
+		else {
+
+			Opp.isDead = true;
+
+			dead++;
+
+			$('#mainAttackLog').css('display', 'none');
+
+    		$('#opponentAttackLog').css('display', 'none');
+
+    		$('#mainKill').empty();
+
+    		$('#mainKill').append(Main.name + ' killed ' + Opp.name + '. Nice Job!');
+
+    		$('#mainKillRow').css('display', 'block');
+
+    		$('#attack').css('display', 'none');
+
+
+			if( dead == 3){
+
+				$('#winRow').css('display', 'block');
+
+				$('#continue').css('display', 'block');
+
+			}
+
+			else {
+
+	    		$('#proceed').css('display', 'block');
+
+    		}
+
+
+		}
+
+	})
+
+	$('#proceed').on('click', function(){
+
+		$('.full').css('background', 'url("./assets/images/background.jpg") no-repeat center center fixed');
+		$('.full').css('-webkit-background-size', 'cover');
+		$('.full').css('-moz-background-size', 'cover');
+		$('.full').css('o-background-size', 'cover');
+		$('.full').css('background-size', 'cover');
+		$('.full').css('transition', 'background 1s linear');
+
+		$('#mainAttackLog').empty();
+		$('#opponentAttackLog').empty();
+
+		$('#proceed').css('display', 'none');
+
+		$('#initialMain').css('display', 'block');
+
+		$('#oppRow').css('display', 'block');
+
+		$('#main').css('display', 'none');
+
+    	$('#versus').css('display', 'none');
+
+    	$('#attack').css('display', 'block');
+
+    	$('#opponent').css('display', 'none');
+
+    	$('#mainKillRow').css('display', 'none');
+
+    	$('#stage'+stage).css('display', 'none');
+
+	})
+
+	$('#tryAgain').on('click', function(){
+
+		$('.full').css('background', 'url("./assets/images/background.jpg") no-repeat center center fixed');
+		$('.full').css('-webkit-background-size', 'cover');
+		$('.full').css('-moz-background-size', 'cover');
+		$('.full').css('o-background-size', 'cover');
+		$('.full').css('background-size', 'cover');
+		$('.full').css('transition', 'background 1s linear');
+
+		$('#mainAttackLog').empty();
+		$('#opponentAttackLog').empty();
+
+		$('#proceed').css('display', 'none');
+
+		$('#initialMain').css('display', 'block');
+
+		$('#welcomeRow').css('display', 'block');
+
+		$('#main').css('display', 'none');
+
+    	$('#versus').css('display', 'none');
+
+    	$('#attack').css('display', 'block');
+
+    	$('#tryAgain').css('display', 'none');
+
+    	$('#opponent').css('display', 'none');
+
+    	$('#mainKillRow').css('display', 'none');
+
+    	$('#stage'+stage).css('display', 'none');
+
+    	$('#' + Main.name + 'Ini').css('display', 'block');
+
+    	for(var i = 0; i < charArray.length; i++){
+
+    		if(charArray[i].currOpponent == true){
+
+    			$('#' + charArray[i].name + 'Ini').css('display', 'block');
+
+    		}
+
+    	}
+
+    	Maya = new character("Maya", 100, 7, 7, 5, false, false, "./assets/images/mayabattle.jpeg", false);
+		Axton = new character("Axton", 150, 4, 4, 20, false, false,"./assets/images/axtonbattle.jpeg", false);
+		Zer0 = new character("Zer0", 120, 8, 8, 15, false, false,"./assets/images/zer0battle.jpeg", false);
+		Salvador = new character("Salvador", 180, 2, 2, 25, false, false,"./assets/images/salvadorbattle.jpeg", false);
+
+		charArray = [Maya, Axton, Zer0, Salvador];
+
+		Main = new character();
+
+	    Opp = new character();
+
+	    stage = 0;
+
+	    dead = 0;
+
+	})
+
+	$('#continue').on('click', function(){
+
+		$('.full').css('background', 'url("./assets/images/win.jpg") no-repeat center center fixed');
+		$('.full').css('-webkit-background-size', 'cover');
+		$('.full').css('-moz-background-size', 'cover');
+		$('.full').css('o-background-size', 'cover');
+		$('.full').css('background-size', 'cover');
+		$('.full').css('transition', 'background 1s linear');
+
+		$('#continue').css('display', 'none');
+
+		$('#main').css('display', 'none');
+
+		$('#versus').css('display', 'none');
+
+		$('#opponent').css('display', 'none');
+
+    	$('#mainKillRow').css('display', 'none');
+
+    	$('#stage3').css('display', 'none');
+
+    	$('#winRow').css('display', 'none');
+
+    	$('#playAgain').css('display', 'block');
+
+	})
+
+	$('#playAgain').on('click', function(){
+
+		$('#playAgain').css('display', 'none');
+
+		$('.full').css('background', 'url("./assets/images/background.jpg") no-repeat center center fixed');
+		$('.full').css('-webkit-background-size', 'cover');
+		$('.full').css('-moz-background-size', 'cover');
+		$('.full').css('o-background-size', 'cover');
+		$('.full').css('background-size', 'cover');
+		$('.full').css('transition', 'background 1s linear');
+
+		$('#mainAttackLog').empty();
+		$('#opponentAttackLog').empty();
+
+		$('#proceed').css('display', 'none');
+
+		$('#initialMain').css('display', 'block');
+
+		$('#welcomeRow').css('display', 'block');
+
+		$('#main').css('display', 'none');
+
+    	$('#versus').css('display', 'none');
+
+    	$('#attack').css('display', 'block');
+
+    	$('#tryAgain').css('display', 'none');
+
+    	$('#opponent').css('display', 'none');
+
+    	$('#mainKillRow').css('display', 'none');
+
+    	$('#stage'+stage).css('display', 'none');
+
+    	$('#' + Main.name + 'Ini').css('display', 'block');
+
+    	for(var i = 0; i < charArray.length; i++){
+
+    		if(charArray[i].currOpponent == true){
+
+    			$('#' + charArray[i].name + 'Ini').css('display', 'block');
+
+    		}
+
+    	}
+
+    	Maya = new character("Maya", 100, 7, 7, 5, false, false, "./assets/images/mayabattle.jpeg", false);
+		Axton = new character("Axton", 150, 4, 4, 20, false, false,"./assets/images/axtonbattle.jpeg", false);
+		Zer0 = new character("Zer0", 120, 8, 8, 15, false, false,"./assets/images/zer0battle.jpeg", false);
+		Salvador = new character("Salvador", 180, 2, 2, 25, false, false,"./assets/images/salvadorbattle.jpeg", false);
+
+		charArray = [Maya, Axton, Zer0, Salvador];
+
+		Main = new character();
+
+	    Opp = new character();
+
+	    stage = 0;
+
+	    dead = 0;
+
+
+	})
 
 
 
