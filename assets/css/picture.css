@@ -9,12 +9,17 @@ body {
 	margin-bottom: 50px;
 	background: none;
 	background-color: none;
+
+	padding-top: 0px;
 }
 
 .full {
-  background: url(../images/background.jpg) no-repeat center center fixed; 
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
+
+	background: url(../images/background.jpg) no-repeat center center fixed; 
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+	transition: background .5s linear;
 }
+

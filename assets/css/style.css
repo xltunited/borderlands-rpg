@@ -7,7 +7,7 @@
 
 }
 
-.welcomeRow{
+#welcomeRow{
 
 	margin-top: 20px;
 
@@ -16,7 +16,7 @@
 #oppRow{
 
 	display: none;
-	margin-top: 20px;
+	margin-top: 10px;
 
 }
 
@@ -29,11 +29,43 @@
 
 
 }
-.initialMain{
 
+#stage1{
+
+	font-family: 'Monofett', cursive;
+	text-align: center;
+	font-size: 7em;
+	color: #fff;
+
+	display: none;
+
+}
+
+#stage2{
+
+	font-family: 'Monofett', cursive;
+	text-align: center;
+	font-size: 7em;
+	color: #fff;
+
+	display: none;
+
+}
+
+#stage3{
+
+	font-family: 'Monofett', cursive;
+	text-align: center;
+	font-size: 7em;
+	color: #fff;
+
+	display: none;
+
+}
+
+#initialMain{
 
 	margin-top: 50px;
-
 }
 
 .list-group-item img{
@@ -113,5 +145,39 @@
 	background-color: transparent;
 	border: none;
 	outline: none;
+
+}
+
+#main{
+
+	display: none;
+
+	margin-top: 20px;
+
+}
+
+#opponent{
+
+	display: none;
+
+	margin-top: 20px;
+	
+}
+
+#battle{
+
+	margin-top: 100px;
+
+}
+
+#versus {
+
+	display: none;
+
+}
+
+.versusPicture{
+
+	margin-top: 110px;
 
 }
